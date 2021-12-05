@@ -43,7 +43,7 @@ class Transaction {
       this.valueAmount = this.value;
       this.account.addTransaction(this);
     } else {
-      return 'Transaction not permitted!'
+      return this.transactionStatus = 'Not permitted. Check balance.'
     }
 
   }
@@ -83,11 +83,11 @@ const myAccount = new Account('snow-patrol');
 
 // console.log('Balance:', t2.balance);
 
-t3 = new Deposit(-120.00, myAccount);
+t3 = new Deposit(120.00, myAccount);
 t3.commit();
 t4 = new Deposit(80.00, myAccount);
 t4.commit();
-t4 = new Withdrawal(-10.00, myAccount);
+t4 = new Withdrawal(200.00, myAccount);
 t4.commit();
 // console.log('Transaction 3:', t3);
 console.log('Account Summary:', myAccount);
