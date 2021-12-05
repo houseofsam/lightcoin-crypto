@@ -12,7 +12,7 @@ class Account {
     let balance = 0;
 
     for (let i = 0; i < this.transactions.length; i++) {
-      balance += this.transactions[i].valueAmount;
+      balance += this.transactions[i].value;
     }
 
     return balance;
@@ -26,26 +26,25 @@ class Transaction {
   }
 
   isAllowed() {
-    if (this.value < 0 && this.account.balance >= this.amount) {
-      return true;
-    } else if (this.value > 0){
-      return true;
-    }else {
-      return false;
+    // this.value < 0 indicates a withdrawal.
+    if (this.value < 0 && this.account.balance < this.amount) {
+      return false; //slightly diff from initial approach
+    } else {
+      return true; //slightly diff from OG  but same idea
     }
   }
 
 
   commit() {
-
-    if (this.isAllowed()) {
-      this.time = new Date();
-      this.valueAmount = this.value;
-      this.account.addTransaction(this);
-    } else {
-      return this.transactionStatus = 'Not permitted. Check balance.'
+    // guard clause
+    if (!this.isAllowed()) {
+      return false;
     }
 
+    this.time = new Date();
+    this.account.addTransaction(this); //if false, transaction doesn't get pushed to array above.
+    // this.valueAmount = this.value; // --> To calculate balance with my initital approach, otherwise not needed 
+    return true; // my sol'n didn't included this
   }
 }
 
@@ -87,10 +86,10 @@ t3 = new Deposit(120.00, myAccount);
 t3.commit();
 t4 = new Deposit(80.00, myAccount);
 t4.commit();
-t4 = new Withdrawal(200.00, myAccount);
-t4.commit();
+t5 = new Withdrawal(190.00, myAccount);
+t5.commit();
 // console.log('Transaction 3:', t3);
 console.log('Account Summary:', myAccount);
-console.log('Transaction Summary:', t4);
-console.log('Transaction Summary:', t4.value);
+// console.log('Transaction Summary:', t5);
+console.log('Transaction Summary:', t5.value);
 console.log('Balance ->', myAccount.balance);
